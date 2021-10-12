@@ -225,11 +225,10 @@ void *ipc_get_chub_map(void)
 	ipc_addr[IPC_REG_PERSISTBUF].base = ipc_addr[IPC_REG_LOG].base + ipc_addr[IPC_REG_LOG].offset;
 	ipc_addr[IPC_REG_PERSISTBUF].offset = CHUB_PERSISTBUF_SIZE;
 
-	if (((u32)ipc_addr[IPC_REG_PERSISTBUF].base + ipc_addr[IPC_REG_PERSISTBUF].offset) >
-			((u32)ipc_addr[IPC_REG_IPC].base + ipc_addr[IPC_REG_IPC].offset))
-		CSP_PRINTF_INFO("%s: %s: wrong persistbuf addr:%p, %d, ipc_end:0x%x\n",
-			NAME_PREFIX, __func__,
-			ipc_addr[IPC_REG_PERSISTBUF].base, ipc_addr[IPC_REG_PERSISTBUF].offset, map->ipc_end);
+	if (((uintptr_t)ipc_addr[IPC_REG_PERSISTBUF].base + ipc_addr[IPC_REG_PERSISTBUF].offset) >
+			((uintptr_t)ipc_addr[IPC_REG_IPC].base + ipc_addr[IPC_REG_IPC].offset))
+		CSP_PRINTF_INFO("%s: %s: wrong persistbuf, offset %d, ipc_end:0x%x\n",
+			NAME_PREFIX, __func__, ipc_addr[IPC_REG_PERSISTBUF].offset, map->ipc_end);
 
 	CSP_PRINTF_INFO
 	    ("%s: contexthub map information(v%u)\n bl(%p %d)\n os(%p %d)\n ipc(%p %d)\n ram(%p %d)\n shared(%p %d)\n dump(%p %d)\n",
