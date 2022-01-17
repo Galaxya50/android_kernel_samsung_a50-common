@@ -228,8 +228,6 @@ source "drivers/vision/Kconfig"
 
 source "drivers/sensorhub/Kconfig"
 
-source "drivers/icdrv/Kconfig"
-
 source "drivers/samsung/Kconfig"
 
 endmenu
