@@ -37,6 +37,7 @@
 #undef MODULE_PARAM_PREFIX
 #define MODULE_PARAM_PREFIX "sec_debug."
 
+int force_softdog;
 typedef void (*force_error_func)(char *arg);
 
 static void simulate_KP(char *arg);
@@ -86,6 +87,7 @@ static void simulate_MUTEX_ABBA(char *arg);
 static void simulate_RWSEM_R(char *arg);
 static void simulate_RWSEM_W(char *arg);
 static void simulate_PRINTK_FAULT(char *arg);
+static void simulate_SOFTDOG(char *arg);
 
 enum {
 	FORCE_KERNEL_PANIC = 0,		/* KP */
@@ -135,6 +137,7 @@ enum {
 	FORCE_RWSEM_R,			/* RWSEM READER */
 	FORCE_RWSEM_W,			/* RWSEM WRITER */
 	FORCE_PRINTK_FAULT,		/* PRINTK FAULT */
+	FORCE_SOFT_DOG, 		/* SOFT DOG */
 	NR_FORCE_ERROR,
 };
 
@@ -196,6 +199,7 @@ struct force_error force_error_vector = {
 		{"rwsem-r",	&simulate_RWSEM_R},
 		{"rwsem-w",	&simulate_RWSEM_W},
 		{"printkfault",	&simulate_PRINTK_FAULT},
+		{"SD", 		&simulate_SOFTDOG},
 	}
 };
 
@@ -1169,6 +1173,11 @@ static int sec_debug_set_force_error(const char *val, const struct kernel_param 
 			force_error_vector.item[i].errfunc(ptr);
 	}
 	return 0;
+}
+
+static void simulate_SOFTDOG(char *arg)
+{
+	force_softdog = 1;
 }
 
 static const struct kernel_param_ops sec_debug_force_error_ops = {
